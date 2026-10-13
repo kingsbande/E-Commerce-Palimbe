@@ -1,6 +1,6 @@
 import { Redirect } from "expo-router";
 
+// Everyone starts in the shop. No login needed to browse.
 export default function Index() {
-  // Later: check login state and role, then send to auth, buyer or seller
   return <Redirect href="/(buyer)/home" />;
 }

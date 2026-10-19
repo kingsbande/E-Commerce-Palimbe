@@ -1,6 +1,7 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { AuthProvider, useAuth } from "../lib/auth";
+import { CartProvider } from "../lib/cart";
 import { takePendingRoute } from "../lib/pendingRoute";
 
 function Gate() {
@@ -30,7 +31,9 @@ function Gate() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <Gate />
+      <CartProvider>
+        <Gate />
+      </CartProvider>
     </AuthProvider>
   );
 }

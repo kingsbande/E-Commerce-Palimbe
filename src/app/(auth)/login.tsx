@@ -1,10 +1,11 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-  KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View,
+  Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View,
 } from "react-native";
 import Button from "../../components/Button";
-import { colors } from "../../constants/theme";
+import { brandGradient, colors, radius } from "../../constants/theme";
 import { supabase } from "../../lib/supabase";
 
 // TEMPORARY: email + password login while phone OTP (SMS) is not set up yet.
@@ -62,10 +63,28 @@ export default function Login() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>Palimbe</Text>
-        <Text style={styles.subtitle}>
-          {mode === "signin" ? "Sign in to continue" : "Create your account"}
-        </Text>
+        <LinearGradient
+          colors={brandGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.hero}
+        >
+          <View style={styles.brandRow}>
+            <View style={styles.logoChip}>
+              <Image
+                source={require("../../../assets/images/icon.png")}
+                style={styles.logo}
+                resizeMode="cover"
+              />
+            </View>
+            <View>
+              <Text style={styles.title}>Palimbe</Text>
+              <Text style={styles.subtitle}>
+                {mode === "signin" ? "Sign in to continue" : "Create your account"}
+              </Text>
+            </View>
+          </View>
+        </LinearGradient>
 
         <Text style={styles.label}>Email</Text>
         <TextInput
@@ -91,11 +110,12 @@ export default function Login() {
         {error ? <Text style={styles.error}>{error}</Text> : null}
         {info ? <Text style={styles.info}>{info}</Text> : null}
 
-        <View style={{ marginTop: 24, gap: 12, alignItems: "flex-start" }}>
+        <View style={{ marginTop: 24, gap: 12, alignItems: "stretch" }}>
           <Button
             title={mode === "signin" ? "Sign in" : "Create account"}
             onPress={submit}
             loading={loading}
+            fullWidth
           />
           <Text
             style={styles.link}
@@ -117,12 +137,21 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 24, justifyContent: "center" },
-  title: { fontSize: 36, fontWeight: "800", color: colors.primary },
-  subtitle: { fontSize: 16, color: colors.muted, marginBottom: 32 },
-  label: { fontSize: 14, fontWeight: "600", marginBottom: 8, color: colors.text },
+  container: { flexGrow: 1, padding: 24, justifyContent: "center", gap: 4 },
+  hero: { borderRadius: 20, padding: 20, marginBottom: 24 },
+  brandRow: { flexDirection: "row", alignItems: "center", gap: 14 },
+  logoChip: {
+    backgroundColor: "#fff",
+    borderRadius: radius.md,
+    padding: 3,
+  },
+  logo: { width: 44, height: 44, borderRadius: radius.sm },
+  title: { fontSize: 32, fontWeight: "900", color: "#fff", letterSpacing: -0.5 },
+  subtitle: { fontSize: 15, color: "rgba(255,255,255,0.9)", marginTop: 3 },
+  label: { fontSize: 14, fontWeight: "700", marginBottom: 8, color: colors.text },
   input: {
-    borderWidth: 1.5, borderColor: colors.border, borderRadius: 12,
+    backgroundColor: colors.card,
+    borderWidth: 1, borderColor: colors.border, borderRadius: 12,
     fontSize: 17, paddingVertical: 14, paddingHorizontal: 14,
   },
   error: { color: colors.danger, marginTop: 12 },

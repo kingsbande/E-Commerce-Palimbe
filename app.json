@@ -1,21 +1,21 @@
 {
   "expo": {
-    "name": "palimbe",
+    "name": "Palimbe",
     "slug": "palimbe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "palimbe",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.khudzatech.palimbe",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#E62E04",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "monochromeImage": "./assets/images/adaptive-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -26,17 +26,31 @@
     "plugins": [
       "expo-router",
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "Palimbe needs access to your photos so you can add product pictures.",
+          "cameraPermission": "Palimbe needs the camera so you can photograph your products."
+        }
+      ],
+      [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#E62E04",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 280,
+          "resizeMode": "contain"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "16c0320d-55b0-4f27-95aa-873ca282a807"
+      }
     }
   }
 }

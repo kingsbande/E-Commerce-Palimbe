@@ -1,3 +1,4 @@
+import type { StyleProp, ViewStyle } from "react-native";
 import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
 import { colors } from "../constants/theme";
 
@@ -7,16 +8,33 @@ type Props = {
   loading?: boolean;
   disabled?: boolean;
   variant?: "primary" | "outline";
+  /** Stretch to the full width of the container. */
+  fullWidth?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function Button({ title, onPress, loading, disabled, variant = "primary" }: Props) {
+export default function Button({
+  title,
+  onPress,
+  loading,
+  disabled,
+  variant = "primary",
+  fullWidth,
+  style,
+}: Props) {
   const outline = variant === "outline";
   const inactive = disabled || loading;
   return (
     <Pressable
       onPress={onPress}
       disabled={inactive}
-      style={[styles.base, outline ? styles.outline : styles.primary, inactive && styles.inactive]}
+      style={[
+        styles.base,
+        outline ? styles.outline : styles.primary,
+        fullWidth && styles.fullWidth,
+        inactive && styles.inactive,
+        style,
+      ]}
     >
       {loading ? (
         <ActivityIndicator color={outline ? colors.primary : "#fff"} />
@@ -28,9 +46,16 @@ export default function Button({ title, onPress, loading, disabled, variant = "p
 }
 
 const styles = StyleSheet.create({
-  base: { paddingVertical: 14, paddingHorizontal: 24, borderRadius: 12, alignItems: "center", minWidth: 160 },
+  base: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 999,
+    alignItems: "center",
+    minWidth: 160,
+  },
+  fullWidth: { alignSelf: "stretch", minWidth: 0 },
   primary: { backgroundColor: colors.primary },
   outline: { borderWidth: 1.5, borderColor: colors.primary, backgroundColor: "transparent" },
   inactive: { opacity: 0.5 },
-  text: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  text: { color: "#fff", fontSize: 16, fontWeight: "700" },
 });

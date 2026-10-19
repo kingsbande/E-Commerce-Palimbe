@@ -1,0 +1,422 @@
+  --non-interactive is not supported, use $CI=1 instead
+env: load .env
+env: export EXPO_PUBLIC_SUPABASE_ANON_KEY EXPO_PUBLIC_SUPABASE_URL
+Starting project at C:\Dev\palimbe
+Using src/app as the root directory for Expo Router.
+React Compiler enabled
+ WARN  Failed to download the latest version of React Native DevTools. Using a fallback version instead. Connect to the internet or check your network settings.
+Starting Metro Bundler
+
+Failed to construct transformer:  Error: Failed to start watch mode.
+    at Timeout._onTimeout (C:\Dev\palimbe\node_modules\@expo\metro-file-map\build\Watcher.js:164:63)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+Waiting on http://localhost:8082
+
+Logs for your project will appear below.
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)
+
+Metro error: Cannot read properties of undefined (reading 'get')
+
+  TypeError: Cannot read properties of undefined (reading 'get')
+    at getOrCreateMap (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:28:20)
+    at DependencyGraph.resolveDependency (C:\Dev\palimbe\node_modules\metro\src\node-haste\DependencyGraph.js:254:25)
+    at C:\Dev\palimbe\node_modules\metro\src\lib\transformHelpers.js:165:21
+    at Server._resolveRelativePath (C:\Dev\palimbe\node_modules\metro\src\Server.js:1396:12)
+    at async MetroBundlerDevServer.resolveRelativePathAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:1720:16)
+    at async MetroBundlerDevServer.metroLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:643:39)
+    at async MetroBundlerDevServer.ssrLoadModuleContents (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:704:52)
+    at async MetroBundlerDevServer.metroImportAsArtifactsAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:591:25)
+    at async MetroBundlerDevServer.getStaticResourcesAsync (C:\Dev\palimbe\node_modules\expo\node_modules\@expo\cli\build\src\start\server\metro\MetroBundlerDevServer.js:432:16)
+    at async Promise.all (index 0)

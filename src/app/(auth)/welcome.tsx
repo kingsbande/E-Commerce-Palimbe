@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../../components/Button";
-import { colors } from "../../constants/theme";
+import { colors, radius } from "../../constants/theme";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
 
@@ -39,7 +39,16 @@ export default function Welcome() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Palimbe</Text>
+      <View style={styles.brandRow}>
+        <View style={styles.logoChip}>
+          <Image
+            source={require("../../../assets/images/icon.png")}
+            style={styles.logo}
+            resizeMode="cover"
+          />
+        </View>
+        <Text style={styles.title}>Welcome to Palimbe</Text>
+      </View>
       <Text style={styles.label}>What should we call you?</Text>
       <TextInput
         style={styles.input}
@@ -58,7 +67,16 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: "center", backgroundColor: colors.background },
-  title: { fontSize: 28, fontWeight: "800", color: colors.text, marginBottom: 28 },
+  brandRow: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 28 },
+  logoChip: {
+    backgroundColor: colors.card,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: 3,
+  },
+  logo: { width: 40, height: 40, borderRadius: radius.sm },
+  title: { fontSize: 26, fontWeight: "800", color: colors.text, flexShrink: 1 },
   label: { fontSize: 14, fontWeight: "600", marginBottom: 8, color: colors.text },
   input: { borderWidth: 1.5, borderColor: colors.border, borderRadius: 12, fontSize: 18, padding: 14 },
   error: { color: colors.danger, marginTop: 10 },

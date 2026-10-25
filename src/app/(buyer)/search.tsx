@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View,
 } from "react-native";
@@ -9,7 +9,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "../../components/ProductCard";
 import SearchBar from "../../components/SearchBar";
 import { brandGradient, colors, radius } from "../../constants/theme";
-import { fetchProducts, type ProductSummary } from "../../lib/products";
+import { fetchProducts, type ProductSummary } from "../../api/products";
+import { track } from "../../lib/analytics";
 
 const SUGGESTIONS = ["Tomatoes", "Maize", "Onions", "Eggs", "Soap", "Rice"];
 
@@ -19,8 +20,12 @@ export default function Search() {
   const [results, setResults] = useState<ProductSummary[]>([]);
   const [searching, setSearching] = useState(false);
   const [searched, setSearched] = useState(false);
+  const trackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (trackTimer.current) clearTimeout(trackTimer.current);
+    trackTimer.current = null;
+
     const q = text.trim();
     if (q.length < 2) return;
 
@@ -29,7 +34,13 @@ export default function Search() {
       setSearching(true);
       try {
         const found = await fetchProducts({ query: q });
-        if (!cancelled) setResults(found);
+        if (!cancelled) {
+          setResults(found);
+          trackTimer.current = setTimeout(() => {
+            trackTimer.current = null;
+            track("search", { query: q, results: found.length });
+          }, 1500);
+        }
       } catch {
         if (!cancelled) setResults([]);
       }
@@ -41,6 +52,8 @@ export default function Search() {
     return () => {
       cancelled = true;
       clearTimeout(timer);
+      if (trackTimer.current) clearTimeout(trackTimer.current);
+      trackTimer.current = null;
     };
   }, [text]);
 

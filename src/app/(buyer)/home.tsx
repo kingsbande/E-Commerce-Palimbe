@@ -1,60 +1,102 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductCard from "../../components/ProductCard";
+import Button from "../../components/Button";
 import SearchBar from "../../components/SearchBar";
 import SectionHeader from "../../components/SectionHeader";
 import { brandGradient, colors, radius, shadow } from "../../constants/theme";
 import { useAuth } from "../../lib/auth";
 import { clearPendingRoute } from "../../lib/pendingRoute";
-import { fetchProducts, type ProductSummary } from "../../lib/products";
-import { supabase } from "../../lib/supabase";
+import { useLookups } from "../../lib/useLookups";
+import { fetchProducts, type ProductSummary } from "../../api/products";
 
-type Category = { id: number; name: string };
+const PAGE_SIZE = 20;
+const FEED_MAX_AGE_MS = 60_000;
 
 export default function Home() {
   const { session, profile } = useAuth();
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useLookups("categories");
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    supabase
-      .from("categories")
-      .select("id, name")
-      .order("sort_order")
-      .then(({ data }) => setCategories((data as Category[]) ?? []));
-  }, []);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const nextFrom = useRef(0);
+  const loadedCategory = useRef<number | null | undefined>(undefined);
+  const lastFetchedAt = useRef(0);
+  const requestId = useRef(0);
 
   const load = useCallback(
     async (isRefresh = false) => {
+      const currentRequest = ++requestId.current;
+      const categoryChanged = loadedCategory.current !== categoryId;
+      if (categoryChanged) {
+        setProducts([]);
+        setLoading(true);
+      }
       if (isRefresh) setRefreshing(true);
       setError("");
       try {
-        setProducts(await fetchProducts({ categoryId }));
+        const rows = await fetchProducts({ categoryId, from: 0, limit: PAGE_SIZE });
+        if (currentRequest !== requestId.current) return;
+        setProducts(rows);
+        nextFrom.current = rows.length;
+        setHasMore(rows.length === PAGE_SIZE);
+        loadedCategory.current = categoryId;
+        lastFetchedAt.current = Date.now();
       } catch (e) {
+        if (currentRequest !== requestId.current) return;
         setError(e instanceof Error ? e.message : "Could not load products");
+      } finally {
+        if (currentRequest === requestId.current) {
+          setLoading(false);
+          setRefreshing(false);
+        }
       }
-      setLoading(false);
-      setRefreshing(false);
     },
     [categoryId]
   );
 
   useFocusEffect(
     useCallback(() => {
-      load();
-    }, [load])
+      if (
+        loadedCategory.current !== categoryId ||
+        Date.now() - lastFetchedAt.current >= FEED_MAX_AGE_MS
+      ) {
+        void load();
+      }
+    }, [categoryId, load])
   );
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+    const currentRequest = requestId.current;
+    setLoadingMore(true);
+    try {
+      const rows = await fetchProducts({
+        categoryId,
+        from: nextFrom.current,
+        limit: PAGE_SIZE,
+      });
+      if (currentRequest !== requestId.current) return;
+      setProducts((current) => [...current, ...rows]);
+      nextFrom.current += rows.length;
+      setHasMore(rows.length === PAGE_SIZE);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not load more products");
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [categoryId, hasMore, loadingMore]);
 
   function goToSearch() {
     router.push("/(buyer)/search");
@@ -166,8 +208,25 @@ export default function Home() {
           ListHeaderComponent={listHeader}
           renderItem={({ item }) => <ProductCard product={item} />}
           refreshing={refreshing}
-          onRefresh={() => load(true)}
+          onRefresh={() => void load(true)}
           contentContainerStyle={styles.list}
+          ListFooterComponent={
+            <View>
+              {error && products.length > 0 ? (
+                <Text style={styles.emptyText}>{error}</Text>
+              ) : null}
+              {hasMore ? (
+                <View style={{ alignItems: "center", paddingVertical: 12 }}>
+                  <Button
+                    title="Load more"
+                    onPress={() => void loadMore()}
+                    loading={loadingMore}
+                    disabled={loadingMore}
+                  />
+                </View>
+              ) : null}
+            </View>
+          }
           ListEmptyComponent={
             <View style={styles.empty}>
               <Ionicons name="cube-outline" size={40} color={colors.muted} />

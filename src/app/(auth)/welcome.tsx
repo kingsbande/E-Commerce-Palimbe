@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../../components/Button";
 import { colors, radius } from "../../constants/theme";
+import { updateProfileName } from "../../api/auth";
 import { useAuth } from "../../lib/auth";
-import { supabase } from "../../lib/supabase";
 
 // Shown once, right after a brand-new account signs in.
 export default function Welcome() {
@@ -22,19 +22,14 @@ export default function Welcome() {
     if (!session) return;
 
     setLoading(true);
-    const { error: err } = await supabase
-      .from("profiles")
-      .update({ full_name: trimmed })
-      .eq("id", session.user.id);
-
-    if (err) {
+    try {
+      await updateProfileName(session.user.id, trimmed);
+      await refreshProfile(); // the root layout then sends them onwards
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save your name");
+    } finally {
       setLoading(false);
-      setError(err.message);
-      return;
     }
-
-    await refreshProfile(); // the root layout then sends them onwards
-    setLoading(false);
   }
 
   return (

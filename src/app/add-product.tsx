@@ -4,10 +4,10 @@ import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
 import ProductForm, { type ProductFormValues } from "../components/ProductForm";
+import { createProduct } from "../api/products";
 import { colors } from "../constants/theme";
 import { useAuth } from "../lib/auth";
-import { saveImages } from "../lib/productImages";
-import { supabase } from "../lib/supabase";
+import { saveImages } from "../api/productImages";
 import { useSeller } from "../lib/useSeller";
 
 export default function AddProduct() {
@@ -37,7 +37,7 @@ export default function AddProduct() {
     setSaving(true);
     try {
       const urls = await saveImages(v.photos, session.user.id);
-      const { error: err } = await supabase.from("products").insert({
+      await createProduct({
         seller_id: seller.id,
         category_id: v.categoryId,
         title: v.title,
@@ -47,7 +47,6 @@ export default function AddProduct() {
         unit: v.unit,
         images: urls,
       });
-      if (err) throw err;
       router.back();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");

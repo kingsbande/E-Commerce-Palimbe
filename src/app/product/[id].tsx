@@ -7,29 +7,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
+import { fetchProduct, type ProductDetail } from "../../api/products";
 import { colors } from "../../constants/theme";
 import { useCart } from "../../lib/cart";
 import { formatMWK } from "../../lib/format";
-import { supabase } from "../../lib/supabase";
-
-type SellerInfo = {
-  id: string;
-  stall_name: string;
-  stall_number: string | null;
-  description: string | null;
-};
-
-type Detail = {
-  id: string;
-  title: string;
-  description: string | null;
-  price_mwk: number | string;
-  quantity: number;
-  unit: string;
-  images: string[] | null;
-  seller_id: string;
-  sellers: SellerInfo | SellerInfo[] | null;
-};
 
 export default function ProductPage() {
   const router = useRouter();
@@ -37,25 +18,30 @@ export default function ProductPage() {
   const { addItem } = useCart();
   const { width } = useWindowDimensions();
 
-  const [product, setProduct] = useState<Detail | null>(null);
+  const [product, setProduct] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (!id) return;
-    supabase
-      .from("products")
-      .select(
-        "id, title, description, price_mwk, quantity, unit, images, seller_id, sellers(id, stall_name, stall_number, description)"
-      )
-      .eq("id", id)
-      .maybeSingle()
-      .then(({ data }) => {
-        setProduct((data as unknown as Detail) ?? null);
-        setLoading(false);
+    let active = true;
+    fetchProduct(id)
+      .then((data) => {
+        if (!active) return;
+        setProduct(data);
+      })
+      .catch((e) => {
+        if (active) setLoadError(e instanceof Error ? e.message : "Could not load this product.");
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
+    return () => {
+      active = false;
+    };
   }, [id]);
 
   function goBack() {
@@ -81,7 +67,9 @@ export default function ProductPage() {
     return (
       <SafeAreaView style={styles.container}>
         {backBar}
-        <Text style={styles.missing}>This product is no longer available.</Text>
+        <Text style={styles.missing}>
+          {loadError || "This product is no longer available."}
+        </Text>
       </SafeAreaView>
     );
   }

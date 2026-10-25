@@ -11,24 +11,19 @@ import { colors } from "../constants/theme";
 import { useAuth } from "../lib/auth";
 import { one } from "../lib/orders";
 import { toMalawiE164 } from "../lib/phone";
-import { supabase } from "../lib/supabase";
-
-type Contact = { whatsapp_phone: string | null };
-type StallRow = {
-  id: string;
-  stall_name: string;
-  stall_number: string | null;
-  description: string | null;
-  section_id: number | null;
-  seller_contacts: Contact | Contact[] | null;
-};
+import { updateSeller, upsertSellerContact } from "../api/sellers";
+import { useLookups } from "../lib/useLookups";
+import { useSeller } from "../lib/useSeller";
 
 export default function EditStall() {
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
-  const [sections, setSections] = useState<ChipOption[]>([]);
-  const [sellerId, setSellerId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { seller, loading: sellerLoading, reload: reloadSeller } = useSeller();
+  const { marketSections } = useLookups("marketSections");
+  const sections: ChipOption[] = marketSections.map((section) => ({
+    id: section.id,
+    label: section.name,
+  }));
   const [stallName, setStallName] = useState("");
   const [sectionId, setSectionId] = useState<number | null>(null);
   const [stallNumber, setStallNumber] = useState("");
@@ -38,37 +33,15 @@ export default function EditStall() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    supabase
-      .from("market_sections")
-      .select("id, name")
-      .order("sort_order")
-      .then(({ data }) =>
-        setSections((data ?? []).map((s: { id: number; name: string }) => ({ id: s.id, label: s.name })))
-      );
-  }, []);
+    if (!seller) return;
+    setStallName(seller.stall_name);
+    setSectionId(seller.section_id);
+    setStallNumber(seller.stall_number ?? "");
+    setDescription(seller.description ?? "");
+    setWhatsapp(one(seller.seller_contacts)?.whatsapp_phone ?? "");
+  }, [seller]);
 
-  useEffect(() => {
-    if (!session) return;
-    supabase
-      .from("sellers")
-      .select("id, stall_name, stall_number, description, section_id, seller_contacts(whatsapp_phone)")
-      .eq("user_id", session.user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        const row = data as unknown as StallRow | null;
-        if (row) {
-          setSellerId(row.id);
-          setStallName(row.stall_name);
-          setSectionId(row.section_id);
-          setStallNumber(row.stall_number ?? "");
-          setDescription(row.description ?? "");
-          setWhatsapp(one(row.seller_contacts)?.whatsapp_phone ?? "");
-        }
-        setLoading(false);
-      });
-  }, [session]);
-
-  if (authLoading || loading) {
+  if (authLoading || sellerLoading) {
     return (
       <SafeAreaView style={styles.center}>
         <ActivityIndicator size="large" />
@@ -76,7 +49,8 @@ export default function EditStall() {
     );
   }
   if (!session) return <Redirect href="/(auth)/login" />;
-  if (!sellerId) return <Redirect href="/register-stall" />;
+  if (!seller) return <Redirect href="/register-stall" />;
+  const currentSeller = seller;
 
   async function save() {
     setError("");
@@ -99,16 +73,12 @@ export default function EditStall() {
     }
 
     setSaving(true);
-    const { data, error: err } = await supabase
-      .from("sellers")
-      .update({
+    const { data, error: err } = await updateSeller(currentSeller.id, {
         stall_name: name,
         section_id: sectionId,
         stall_number: stallNumber.trim() || null,
         description: description.trim() || null,
-      })
-      .eq("id", sellerId)
-      .select("id");
+      });
 
     if (err || !data || data.length === 0) {
       setSaving(false);
@@ -116,17 +86,13 @@ export default function EditStall() {
       return;
     }
 
-    const { error: contactErr } = await supabase
-      .from("seller_contacts")
-      .upsert(
-        { seller_id: sellerId, whatsapp_phone: whatsappNumber, updated_at: new Date().toISOString() },
-        { onConflict: "seller_id" }
-      );
+    const { error: contactErr } = await upsertSellerContact(currentSeller.id, whatsappNumber);
     setSaving(false);
     if (contactErr) {
       setError(contactErr.message);
       return;
     }
+    await reloadSeller();
     router.back();
   }
 

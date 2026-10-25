@@ -1,8 +1,10 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
+import Tracker from "../components/Tracker";
 import { AuthProvider, useAuth } from "../lib/auth";
 import { CartProvider } from "../lib/cart";
 import { takePendingRoute } from "../lib/pendingRoute";
+import { SellerProvider } from "../lib/useSeller";
 
 function Gate() {
   const { session, profile, loading } = useAuth();
@@ -25,15 +27,22 @@ function Gate() {
     router.replace(takePendingRoute() ?? "/(buyer)/home");
   }, [loading, session, profile, segments, router]);
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <>
+      <Tracker />
+      <Stack screenOptions={{ headerShown: false }} />
+    </>
+  );
 }
 
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Gate />
-      </CartProvider>
+      <SellerProvider>
+        <CartProvider>
+          <Gate />
+        </CartProvider>
+      </SellerProvider>
     </AuthProvider>
   );
 }

@@ -3,8 +3,8 @@ import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../../components/Button";
 import { colors } from "../../constants/theme";
+import { resendPhoneOtp, verifyPhoneOtp } from "../../api/auth";
 import { toMalawiE164 } from "../../lib/phone";
-import { supabase } from "../../lib/supabase";
 
 export default function Verify() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function Verify() {
     if (!phone) { setError("Phone number missing. Go back and try again."); return; }
     if (code.length !== 6) { setError("Enter the 6-digit code"); return; }
     setLoading(true);
-    const { error: err } = await supabase.auth.verifyOtp({ phone, token: code, type: "sms" });
+    const { error: err } = await verifyPhoneOtp(phone, code);
     setLoading(false);
     if (err) setError(err.message);
     // On success the session updates and the root layout redirects automatically
@@ -29,7 +29,7 @@ export default function Verify() {
   async function resend() {
     setError(""); setInfo("");
     if (!phone) return;
-    const { error: err } = await supabase.auth.signInWithOtp({ phone });
+    const { error: err } = await resendPhoneOtp(phone);
     if (err) setError(err.message);
     else setInfo("A new code has been sent.");
   }

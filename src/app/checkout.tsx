@@ -7,22 +7,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
 import ChipSelect from "../components/ChipSelect";
 import { colors } from "../constants/theme";
+import { createAddress, fetchAddresses, placeOrder as submitOrder, type Address } from "../api/checkout";
 import { useAuth } from "../lib/auth";
 import { useCart, type CartItem } from "../lib/cart";
 import { formatMWK } from "../lib/format";
 import { toMalawiE164 } from "../lib/phone";
-import { supabase } from "../lib/supabase";
-
-type Address = {
-  id: string;
-  label: string;
-  district: string;
-  area: string;
-  landmark: string | null;
-  is_default: boolean;
-};
-
-const ADDRESS_COLUMNS = "id, label, district, area, landmark, is_default";
 const LABELS = ["Home", "Work", "Other"].map((l) => ({ id: l, label: l }));
 
 export default function Checkout() {
@@ -56,17 +45,14 @@ export default function Checkout() {
 
   useEffect(() => {
     if (!session) return;
-    supabase
-      .from("addresses")
-      .select(ADDRESS_COLUMNS)
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
-        const list = (data ?? []) as Address[];
+    fetchAddresses()
+      .then((list) => {
         setAddresses(list);
         const preferred = list.find((a) => a.is_default) ?? list[0];
         if (preferred) setAddressId(preferred.id);
         if (list.length === 0) setShowForm(true);
-      });
+      })
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : "Could not load addresses"));
   }, [session]);
 
   useEffect(() => {
@@ -93,24 +79,22 @@ export default function Checkout() {
     }
     if (!session) return;
     setSavingAddress(true);
-    const { data, error: err } = await supabase
-      .from("addresses")
-      .insert({
-        user_id: session.user.id,
+    let saved: Address;
+    try {
+      saved = await createAddress({
+        userId: session.user.id,
         label: label || "Home",
         district: district.trim(),
         area: area.trim(),
         landmark: landmark.trim() || null,
-        is_default: addresses.length === 0,
-      })
-      .select(ADDRESS_COLUMNS)
-      .single();
-    setSavingAddress(false);
-    if (err || !data) {
-      setError(err?.message ?? "Could not save the address");
+        isDefault: addresses.length === 0,
+      });
+    } catch (err) {
+      setSavingAddress(false);
+      setError(err instanceof Error ? err.message : "Could not save the address");
       return;
     }
-    const saved = data as Address;
+    setSavingAddress(false);
     setAddresses((prev) => [saved, ...prev]);
     setAddressId(saved.id);
     setShowForm(false);
@@ -132,22 +116,22 @@ export default function Checkout() {
     }
 
     setPlacing(true);
-    const { data, error: err } = await supabase.rpc("place_order", {
-      p_items: items.map((i) => ({ product_id: i.productId, quantity: i.quantity })),
-      p_payment_method: deliveryType === "delivery" ? "cash_on_delivery" : "pay_on_pickup",
-      p_delivery_type: deliveryType,
-      p_address_id: deliveryType === "delivery" ? addressId : null,
-      p_buyer_phone: buyerPhone,
-      p_notes: notes.trim() || null,
-    });
-    setPlacing(false);
-
-    if (err) {
-      setError(err.message);
-      return;
+    try {
+      const orderId = await submitOrder({
+        items: items.map((i) => ({ product_id: i.productId, quantity: i.quantity })),
+        paymentMethod: deliveryType === "delivery" ? "cash_on_delivery" : "pay_on_pickup",
+        deliveryType,
+        addressId: deliveryType === "delivery" ? addressId : null,
+        buyerPhone,
+        notes: notes.trim() || null,
+      });
+      clear();
+      router.replace({ pathname: "/order/[id]", params: { id: orderId, placed: "1" } });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not place your order");
+    } finally {
+      setPlacing(false);
     }
-    clear();
-    router.replace({ pathname: "/order/[id]", params: { id: String(data), placed: "1" } });
   }
 
   const paymentText =

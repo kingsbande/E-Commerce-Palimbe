@@ -7,13 +7,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import StatusBadge from "../../components/StatusBadge";
+import { fetchSellerOrder, updateSellerOrderStatus } from "../../api/orders";
 import { colors } from "../../constants/theme";
 import { formatMWK } from "../../lib/format";
 import {
-  PAYMENT_LABEL, SELLER_ORDER_SELECT, describeAddress, formatDate, one, shortId,
+  PAYMENT_LABEL, describeAddress, formatDate, one, shortId,
   type SellerOrderRow, type SellerOrderStatus,
 } from "../../lib/orders";
-import { supabase } from "../../lib/supabase";
 
 type Action = { label: string; to: SellerOrderStatus; danger?: boolean };
 
@@ -38,16 +38,19 @@ export default function SellerOrderPage() {
   const [row, setRow] = useState<SellerOrderRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [loadError, setLoadError] = useState("");
 
   const load = useCallback(async () => {
     if (!id) return;
-    const { data } = await supabase
-      .from("seller_orders")
-      .select(SELLER_ORDER_SELECT)
-      .eq("id", id)
-      .maybeSingle();
-    setRow((data as unknown as SellerOrderRow) ?? null);
-    setLoading(false);
+    try {
+      const data = await fetchSellerOrder(id);
+      setRow(data);
+      setLoadError("");
+    } catch (e) {
+      setLoadError(e instanceof Error ? e.message : "Could not load order.");
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
   useFocusEffect(
@@ -70,14 +73,16 @@ export default function SellerOrderPage() {
   async function changeStatus(to: SellerOrderStatus) {
     if (!row) return;
     setBusy(true);
-    const { data, error } = await supabase
-      .from("seller_orders")
-      .update({ status: to })
-      .eq("id", row.id)
-      .select("id");
+    let updated = false;
+    let message: string | null = null;
+    try {
+      updated = await updateSellerOrderStatus(row.id, to);
+    } catch (e) {
+      message = e instanceof Error ? e.message : null;
+    }
     setBusy(false);
-    if (error || !data || data.length === 0) {
-      Alert.alert("Could not update", error?.message ?? "You are not allowed to change this order.");
+    if (!updated) {
+      Alert.alert("Could not update", message ?? "You are not allowed to change this order.");
       return;
     }
     await load();
@@ -110,7 +115,7 @@ export default function SellerOrderPage() {
     return (
       <SafeAreaView style={styles.container}>
         {backBar}
-        <Text style={styles.missing}>Order not found.</Text>
+        <Text style={styles.missing}>{loadError || "Order not found."}</Text>
       </SafeAreaView>
     );
   }

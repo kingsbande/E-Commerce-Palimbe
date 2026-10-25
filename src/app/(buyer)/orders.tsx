@@ -2,35 +2,45 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "../../components/Button";
 import SignInPrompt from "../../components/SignInPrompt";
 import StatusBadge from "../../components/StatusBadge";
+import { fetchBuyerOrders } from "../../api/orders";
 import { colors } from "../../constants/theme";
 import { useAuth } from "../../lib/auth";
 import { formatMWK } from "../../lib/format";
 import {
-  BUYER_ORDER_SELECT, formatDate, one, shortId, type BuyerOrder,
+  formatDate, one, shortId, type BuyerOrder,
 } from "../../lib/orders";
-import { supabase } from "../../lib/supabase";
 
+const PAGE_SIZE = 20;
 export default function Orders() {
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [orders, setOrders] = useState<BuyerOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [error, setError] = useState("");
+  const [nextFrom, setNextFrom] = useState(0);
 
   const load = useCallback(
     async (isRefresh = false) => {
       if (!session) return;
       if (isRefresh) setRefreshing(true);
-      const { data } = await supabase
-        .from("orders")
-        .select(BUYER_ORDER_SELECT)
-        .eq("buyer_id", session.user.id)
-        .order("created_at", { ascending: false });
-      setOrders((data as unknown as BuyerOrder[]) ?? []);
-      setLoading(false);
-      setRefreshing(false);
+      setError("");
+      try {
+        const rows = await fetchBuyerOrders(session.user.id, 0, PAGE_SIZE);
+        setOrders(rows);
+        setNextFrom(rows.length);
+        setHasMore(rows.length === PAGE_SIZE);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Could not load orders.");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
     },
     [session]
   );
@@ -40,6 +50,22 @@ export default function Orders() {
       load();
     }, [load])
   );
+
+  const loadMore = useCallback(async () => {
+    if (!session || loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    setError("");
+    try {
+      const rows = await fetchBuyerOrders(session.user.id, nextFrom, PAGE_SIZE);
+      setOrders((current) => [...current, ...rows]);
+      setNextFrom((current) => current + rows.length);
+      setHasMore(rows.length === PAGE_SIZE);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not load more orders.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [hasMore, loadingMore, nextFrom, session]);
 
   if (authLoading) return null;
   if (!session) return <SignInPrompt message="Sign in to see your orders." />;
@@ -61,8 +87,25 @@ export default function Orders() {
         onRefresh={() => load(true)}
         contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
         ListHeaderComponent={<Text style={styles.title}>My orders</Text>}
+        ListFooterComponent={
+          <View>
+            {error ? <Text style={styles.empty}>{error}</Text> : null}
+            {hasMore ? (
+              <View style={{ alignItems: "center", paddingVertical: 12 }}>
+                <Button
+                  title="Load more"
+                  onPress={() => void loadMore()}
+                  loading={loadingMore}
+                  disabled={loadingMore}
+                />
+              </View>
+            ) : null}
+          </View>
+        }
         ListEmptyComponent={
-          <Text style={styles.empty}>No orders yet. Your orders will appear here.</Text>
+          <Text style={styles.empty}>
+            {error || "No orders yet. Your orders will appear here."}
+          </Text>
         }
         renderItem={({ item }) => (
           <Pressable

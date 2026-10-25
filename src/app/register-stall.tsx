@@ -1,5 +1,5 @@
 import { Redirect, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View,
 } from "react-native";
@@ -9,13 +9,20 @@ import ChipSelect, { type ChipOption } from "../components/ChipSelect";
 import { colors } from "../constants/theme";
 import { useAuth } from "../lib/auth";
 import { toMalawiE164 } from "../lib/phone";
-import { supabase } from "../lib/supabase";
+import { createSeller, insertSellerContact } from "../api/sellers";
+import { useLookups } from "../lib/useLookups";
+import { useSeller } from "../lib/useSeller";
 
 export default function RegisterStall() {
   const router = useRouter();
   const { session, profile, loading: authLoading, refreshProfile } = useAuth();
+  const { reload: reloadSeller } = useSeller();
 
-  const [sections, setSections] = useState<ChipOption[]>([]);
+  const { marketSections } = useLookups("marketSections");
+  const sections: ChipOption[] = marketSections.map((section) => ({
+    id: section.id,
+    label: section.name,
+  }));
   const [stallName, setStallName] = useState("");
   const [sectionId, setSectionId] = useState<number | null>(null);
   const [stallNumber, setStallNumber] = useState("");
@@ -23,16 +30,6 @@ export default function RegisterStall() {
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    supabase
-      .from("market_sections")
-      .select("id, name")
-      .order("sort_order")
-      .then(({ data }) =>
-        setSections((data ?? []).map((s: { id: number; name: string }) => ({ id: s.id, label: s.name })))
-      );
-  }, []);
 
   if (authLoading) return null;
   if (!session) return <Redirect href="/(auth)/login" />;
@@ -61,17 +58,13 @@ export default function RegisterStall() {
     if (!session) return;
 
     setSaving(true);
-    const { data, error: err } = await supabase
-      .from("sellers")
-      .insert({
+    const { data, error: err } = await createSeller({
         user_id: session.user.id,
         stall_name: name,
         section_id: sectionId,
         stall_number: stallNumber.trim() || null,
         description: description.trim() || null,
-      })
-      .select("id")
-      .single();
+      });
 
     if (err || !data) {
       setSaving(false);
@@ -81,11 +74,10 @@ export default function RegisterStall() {
 
     // The WhatsApp number is stored privately, apart from the public stall details
     if (whatsappNumber) {
-      await supabase
-        .from("seller_contacts")
-        .insert({ seller_id: (data as { id: string }).id, whatsapp_phone: whatsappNumber });
+      await insertSellerContact(data.id, whatsappNumber);
     }
 
+    await reloadSeller();
     await refreshProfile(); // role becomes "seller", then the redirect above runs
     setSaving(false);
   }

@@ -6,33 +6,40 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
+import { fetchBuyerOrder } from "../../api/orders";
 import StatusBadge from "../../components/StatusBadge";
 import { colors } from "../../constants/theme";
 import { formatMWK } from "../../lib/format";
 import {
-  BUYER_ORDER_SELECT, PAYMENT_LABEL, describeAddress, formatDate, one, shortId,
+  PAYMENT_LABEL, describeAddress, formatDate, one, shortId,
   type BuyerOrder,
 } from "../../lib/orders";
-import { supabase } from "../../lib/supabase";
 
 export default function OrderPage() {
   const router = useRouter();
   const { id, placed } = useLocalSearchParams<{ id: string; placed?: string }>();
   const [order, setOrder] = useState<BuyerOrder | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
   useFocusEffect(
     useCallback(() => {
       if (!id) return;
-      supabase
-        .from("orders")
-        .select(BUYER_ORDER_SELECT)
-        .eq("id", id)
-        .maybeSingle()
-        .then(({ data }) => {
-          setOrder((data as unknown as BuyerOrder) ?? null);
-          setLoading(false);
+      let active = true;
+      fetchBuyerOrder(id)
+        .then((data) => {
+          if (!active) return;
+          setOrder(data);
+        })
+        .catch((e) => {
+          if (active) setLoadError(e instanceof Error ? e.message : "Could not load order.");
+        })
+        .finally(() => {
+          if (active) setLoading(false);
         });
+      return () => {
+        active = false;
+      };
     }, [id])
   );
 
@@ -59,7 +66,7 @@ export default function OrderPage() {
     return (
       <SafeAreaView style={styles.container}>
         {backBar}
-        <Text style={styles.missing}>Order not found.</Text>
+        <Text style={styles.missing}>{loadError || "Order not found."}</Text>
       </SafeAreaView>
     );
   }

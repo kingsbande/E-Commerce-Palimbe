@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import Button from "../../components/Button";
 import { brandGradient, colors, radius } from "../../constants/theme";
-import { supabase } from "../../lib/supabase";
+import { signInWithPassword, signUpWithPassword } from "../../api/auth";
 
 // TEMPORARY: email + password login while phone OTP (SMS) is not set up yet.
 export default function Login() {
@@ -33,16 +33,10 @@ export default function Login() {
 
     setLoading(true);
     if (mode === "signin") {
-      const { error: err } = await supabase.auth.signInWithPassword({
-        email: cleanEmail,
-        password,
-      });
+      const { error: err } = await signInWithPassword(cleanEmail, password);
       if (err) setError(err.message);
     } else {
-      const { data, error: err } = await supabase.auth.signUp({
-        email: cleanEmail,
-        password,
-      });
+      const { data, error: err } = await signUpWithPassword(cleanEmail, password);
       if (err) setError(err.message);
       else if (!data.session) {
         setInfo("Account created. Check your email to confirm it, then sign in.");

@@ -1,15 +1,13 @@
 import type { Session } from "@supabase/supabase-js";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { AppState } from "react-native";
-import { supabase } from "./supabase";
+import {
+  fetchProfile, getSession, onAuthStateChange, signOut as signOutUser,
+  startAutoRefresh, stopAutoRefresh,
+} from "../api/auth";
+import type { Profile } from "../api/auth";
 
-export type Profile = {
-  id: string;
-  full_name: string;
-  phone: string | null;
-  role: "buyer" | "seller" | "admin";
-  language: "en" | "ny";
-};
+export type { Profile } from "../api/auth";
 
 type AuthContextType = {
   session: Session | null;
@@ -35,16 +33,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const loadProfile = useCallback(async (userId: string) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, full_name, phone, role, language")
-      .eq("id", userId)
-      .single();
-    setProfile((data as Profile) ?? null);
+    try {
+      setProfile(await fetchProfile(userId));
+    } catch (error) {
+      setProfile(null);
+      console.error("Unable to load user profile", error);
+    }
   }, []);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    getSession().then(({ data }) => {
       setSession(data.session);
       if (data.session) {
         loadProfile(data.session.user.id).finally(() => setLoading(false));
@@ -53,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: sub } = onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       if (newSession) {
         // defer: avoid calling Supabase inside the auth callback itself
@@ -65,8 +63,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Pause token refresh while the app is in the background
     const appState = AppState.addEventListener("change", (state) => {
-      if (state === "active") supabase.auth.startAutoRefresh();
-      else supabase.auth.stopAutoRefresh();
+      if (state === "active") startAutoRefresh();
+      else stopAutoRefresh();
     });
 
     return () => {
@@ -80,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [session, loadProfile]);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
+    await signOutUser();
   }, []);
 
   return (

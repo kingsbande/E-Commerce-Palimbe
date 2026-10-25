@@ -4,45 +4,41 @@ import { ActivityIndicator, Alert, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import ProductForm, { type ProductFormValues } from "../../components/ProductForm";
+import {
+  deleteProduct, fetchEditableProduct, updateProduct, type EditableProduct,
+} from "../../api/products";
+import { removeImages, saveImages, type PhotoItem } from "../../api/productImages";
 import { colors } from "../../constants/theme";
 import { useAuth } from "../../lib/auth";
-import { removeImages, saveImages, type PhotoItem } from "../../lib/productImages";
-import { supabase } from "../../lib/supabase";
 import { useSeller } from "../../lib/useSeller";
-
-type Product = {
-  id: string;
-  title: string;
-  description: string | null;
-  price_mwk: number | string;
-  quantity: number;
-  unit: string;
-  images: string[] | null;
-  category_id: number | null;
-  seller_id: string;
-};
 
 export default function EditProduct() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { session } = useAuth();
   const { seller, loading: sellerLoading } = useSeller();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<EditableProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!id) return;
-    supabase
-      .from("products")
-      .select("id, title, description, price_mwk, quantity, unit, images, category_id, seller_id")
-      .eq("id", id)
-      .maybeSingle()
-      .then(({ data }) => {
-        setProduct((data as unknown as Product) ?? null);
-        setLoading(false);
+    let active = true;
+    fetchEditableProduct(id)
+      .then((data) => {
+        if (!active) return;
+        setProduct(data);
+      })
+      .catch((e) => {
+        if (active) setError(e instanceof Error ? e.message : "Could not load product.");
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
+    return () => {
+      active = false;
+    };
   }, [id]);
 
   if (sellerLoading || loading) {
@@ -58,7 +54,7 @@ export default function EditProduct() {
   if (!product || product.seller_id !== seller.id) {
     return (
       <SafeAreaView style={styles.center}>
-        <Text style={styles.title}>Product not found</Text>
+        <Text style={styles.title}>{error || "Product not found"}</Text>
         <Button title="Go back" variant="outline" onPress={() => router.back()} />
       </SafeAreaView>
     );
@@ -77,9 +73,7 @@ export default function EditProduct() {
     setSaving(true);
     try {
       const urls = await saveImages(v.photos, session.user.id);
-      const { data, error: err } = await supabase
-        .from("products")
-        .update({
+      const updated = await updateProduct(currentProduct.id, {
           category_id: v.categoryId,
           title: v.title,
           description: v.description || null,
@@ -87,11 +81,8 @@ export default function EditProduct() {
           quantity: v.quantity,
           unit: v.unit,
           images: urls,
-        })
-        .eq("id", currentProduct.id)
-        .select("id");
-      if (err) throw err;
-      if (!data || data.length === 0) throw new Error("You are not allowed to change this product.");
+        });
+      if (!updated) throw new Error("You are not allowed to change this product.");
 
       // Tidy up photos the seller removed (best effort)
       const removed = (currentProduct.images ?? []).filter((u) => !urls.includes(u));
@@ -115,14 +106,16 @@ export default function EditProduct() {
           style: "destructive",
           onPress: async () => {
             setSaving(true);
-            const { data, error: err } = await supabase
-              .from("products")
-              .delete()
-              .eq("id", currentProduct.id)
-              .select("id");
-            if (err || !data || data.length === 0) {
+            try {
+              const deleted = await deleteProduct(currentProduct.id);
+              if (!deleted) {
+                setSaving(false);
+                Alert.alert("Could not delete", "You are not allowed to delete this product.");
+                return;
+              }
+            } catch (e) {
               setSaving(false);
-              Alert.alert("Could not delete", err?.message ?? "You are not allowed to delete this product.");
+              Alert.alert("Could not delete", e instanceof Error ? e.message : "Something went wrong.");
               return;
             }
             await removeImages(currentProduct.images ?? []);

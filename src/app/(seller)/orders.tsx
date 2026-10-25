@@ -2,19 +2,17 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "../../components/Button";
 import StatusBadge from "../../components/StatusBadge";
+import { fetchSellerOrders } from "../../api/orders";
 import { colors } from "../../constants/theme";
 import { formatMWK } from "../../lib/format";
 import {
-  SELLER_ORDER_SELECT, formatDate, one, shortId,
-  type SellerOrderRow, type SellerOrderStatus,
+  formatDate, one, shortId, type SellerOrderRow,
 } from "../../lib/orders";
-import { supabase } from "../../lib/supabase";
 import { useSeller } from "../../lib/useSeller";
 
-const RANK: Record<SellerOrderStatus, number> = {
-  pending: 0, confirmed: 1, ready: 2, completed: 3, declined: 4, cancelled: 4,
-};
+const PAGE_SIZE = 20;
 
 export default function SellerOrders() {
   const router = useRouter();
@@ -22,26 +20,27 @@ export default function SellerOrders() {
   const [orders, setOrders] = useState<SellerOrderRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [error, setError] = useState("");
+  const [nextFrom, setNextFrom] = useState(0);
 
   const load = useCallback(
     async (isRefresh = false) => {
       if (!seller) return;
       if (isRefresh) setRefreshing(true);
-      const { data } = await supabase
-        .from("seller_orders")
-        .select(SELLER_ORDER_SELECT)
-        .eq("seller_id", seller.id)
-        .order("created_at", { ascending: false });
-      const rows = ((data as unknown as SellerOrderRow[]) ?? []).slice();
-      // Needs-attention orders first, newest first inside each group
-      rows.sort(
-        (a, b) =>
-          RANK[a.status] - RANK[b.status] ||
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-      setOrders(rows);
-      setLoading(false);
-      setRefreshing(false);
+      setError("");
+      try {
+        const rows = await fetchSellerOrders(seller.id, 0, PAGE_SIZE);
+        setOrders(rows);
+        setNextFrom(rows.length);
+        setHasMore(rows.length === PAGE_SIZE);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Could not load orders.");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
     },
     [seller]
   );
@@ -51,6 +50,22 @@ export default function SellerOrders() {
       load();
     }, [load])
   );
+
+  const loadMore = useCallback(async () => {
+    if (!seller || loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    setError("");
+    try {
+      const rows = await fetchSellerOrders(seller.id, nextFrom, PAGE_SIZE);
+      setOrders((current) => [...current, ...rows]);
+      setNextFrom((current) => current + rows.length);
+      setHasMore(rows.length === PAGE_SIZE);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not load more orders.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [hasMore, loadingMore, nextFrom, seller]);
 
   if (sellerLoading || (seller && loading)) {
     return (
@@ -75,13 +90,28 @@ export default function SellerOrders() {
             <Text style={styles.title}>Orders</Text>
             {newCount > 0 && (
               <Text style={styles.newText}>
-                {newCount} new {newCount === 1 ? "order" : "orders"} waiting for you
+                {newCount} new {newCount === 1 ? "order" : "orders"} in the loaded results
               </Text>
             )}
           </View>
         }
         ListEmptyComponent={
           <Text style={styles.empty}>No orders yet. New orders will appear here.</Text>
+        }
+        ListFooterComponent={
+          <View>
+            {error ? <Text style={styles.empty}>{error}</Text> : null}
+            {hasMore ? (
+              <View style={{ alignItems: "center", paddingVertical: 12 }}>
+                <Button
+                  title="Load more"
+                  onPress={() => void loadMore()}
+                  loading={loadingMore}
+                  disabled={loadingMore}
+                />
+              </View>
+            ) : null}
+          </View>
         }
         renderItem={({ item }) => {
           const o = one(item.orders);

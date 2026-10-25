@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, radius, shadow } from "../constants/theme";
 import { formatMWK } from "../lib/format";
-import type { ProductSummary } from "../lib/products";
+import type { ProductSummary } from "../api/products";
 
 export default function ProductCard({ product }: { product: ProductSummary }) {
   const router = useRouter();

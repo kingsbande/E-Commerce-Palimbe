@@ -2,6 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from "react";
+import { track } from "./analytics";
+import { useAuth } from "./auth";
 
 export type CartItem = {
   productId: string;
@@ -26,7 +28,11 @@ type CartContextType = {
   clear: () => void;
 };
 
-const STORAGE_KEY = "palimbe_cart_v1";
+// v2 stores who owns the cart. The old v1 key had no owner, so it is removed.
+const STORAGE_KEY = "palimbe_cart_v2";
+const OLD_KEY = "palimbe_cart_v1";
+
+type SavedCart = { ownerId: string | null; items: CartItem[] };
 
 const CartContext = createContext<CartContextType>({
   items: [],
@@ -43,29 +49,59 @@ export const useCart = () => useContext(CartContext);
 
 // NOTE: prices stored here are for display only. The server re-checks every
 // price and the stock when the order is placed.
+//
+// Cart ownership rules:
+// - A guest's cart is kept, and becomes the cart of whoever signs in next.
+// - A signed-in person's cart is cleared when they sign out, or when a
+//   different account signs in on the same phone.
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { session, loading: authLoading } = useAuth();
+  const userId = session?.user.id ?? null;
+
   const [items, setItems] = useState<CartItem[]>([]);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    AsyncStorage.removeItem(OLD_KEY).catch(() => {});
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
-        if (raw) {
-          try {
-            setItems(JSON.parse(raw) as CartItem[]);
-          } catch {
-            // ignore a corrupted cart
-          }
+        if (!raw) return;
+        try {
+          const saved = JSON.parse(raw) as SavedCart;
+          setItems(saved.items ?? []);
+          setOwnerId(saved.ownerId ?? null);
+        } catch {
+          // ignore a corrupted cart
         }
       })
       .finally(() => setReady(true));
   }, []);
 
+  // Keep the cart tied to the right person
   useEffect(() => {
-    if (ready) AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(items)).catch(() => {});
-  }, [items, ready]);
+    if (!ready || authLoading) return;
+    if (userId) {
+      if (ownerId === null) {
+        setOwnerId(userId); // a guest cart is adopted by the person who signed in
+      } else if (ownerId !== userId) {
+        setItems([]); // a different account signed in
+        setOwnerId(userId);
+      }
+    } else if (ownerId !== null) {
+      setItems([]); // signed out
+      setOwnerId(null);
+    }
+  }, [ready, authLoading, userId, ownerId]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const saved: SavedCart = { ownerId, items };
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(saved)).catch(() => {});
+  }, [items, ownerId, ready]);
 
   const addItem = useCallback((item: Omit<CartItem, "quantity">, qty = 1) => {
+    track("add_to_cart", { product_id: item.productId });
     setItems((prev) => {
       const existing = prev.find((i) => i.productId === item.productId);
       if (existing) {

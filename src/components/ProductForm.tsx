@@ -1,14 +1,14 @@
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView,
   StyleSheet, Text, TextInput, View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../constants/theme";
-import type { PhotoItem } from "../lib/productImages";
-import { supabase } from "../lib/supabase";
+import type { PhotoItem } from "../api/productImages";
+import { useLookups } from "../lib/useLookups";
 import Button from "./Button";
 import ChipSelect, { type ChipOption } from "./ChipSelect";
 
@@ -61,7 +61,11 @@ async function shrink(uri: string): Promise<{ uri: string; base64: string }> {
 export default function ProductForm({
   heading, submitLabel, initial, saving, error, onSubmit, onCancel, footer,
 }: Props) {
-  const [categories, setCategories] = useState<ChipOption[]>([]);
+  const { categories: categoryRows } = useLookups("categories");
+  const categories: ChipOption[] = categoryRows.map((category) => ({
+    id: category.id,
+    label: category.name,
+  }));
   const [photos, setPhotos] = useState<PhotoItem[]>(initial?.photos ?? []);
   const [processing, setProcessing] = useState(false);
   const [title, setTitle] = useState(initial?.title ?? "");
@@ -73,16 +77,6 @@ export default function ProductForm({
   const [categoryId, setCategoryId] = useState<number | null>(initial?.categoryId ?? null);
   const [description, setDescription] = useState(initial?.description ?? "");
   const [localError, setLocalError] = useState("");
-
-  useEffect(() => {
-    supabase
-      .from("categories")
-      .select("id, name")
-      .order("sort_order")
-      .then(({ data }) =>
-        setCategories((data ?? []).map((c: { id: number; name: string }) => ({ id: c.id, label: c.name })))
-      );
-  }, []);
 
   async function addFromResult(result: ImagePicker.ImagePickerResult) {
     if (result.canceled) return;
